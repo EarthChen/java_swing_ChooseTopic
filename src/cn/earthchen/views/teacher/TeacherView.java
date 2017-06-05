@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,7 +25,6 @@ public class TeacherView extends JFrame implements ActionListener {
     private JTextArea topicContentTextArea;
     private JTextField nameTextField, ageTextField, sexTextField, birthdayTextField;
     private String teacherNo = null;
-    
     private TeacherInfoModel TeacherInfoModel = null;
     private TopicInfoModel topicInfoModel;
     private JTable topicInfoTable;
@@ -35,21 +33,17 @@ public class TeacherView extends JFrame implements ActionListener {
         TeacherView teacherView = new TeacherView("10001");
     }
 
-
     public TeacherView(String teacherNo) {
         this.teacherNo = teacherNo;
         JLabel welcomeLabel = new JLabel("欢迎你:" + teacherNo);
         welcomeLabel.setBounds(20, 10, 400, 30);
         welcomeLabel.setFont(new Font("楷体", Font.BOLD, 24));
         welcomeLabel.setForeground(Color.blue);
-
         jp = new JPanel[4];
         JPanel jp1 = new JPanel();
-
         for (int i = 0; i < jp.length; i++) {
             jp[i] = new JPanel();
         }
-
         chooseTopicLabel = new JLabel("选题表");
         myTopicInfoLabel = new JLabel("我的课程设计信息表");
         myPersonInfoLabel = new JLabel("个人信息表");
@@ -143,10 +137,7 @@ public class TeacherView extends JFrame implements ActionListener {
         topicInfoTable.setFont(new Font("楷体", Font.BOLD, 15));
         topicInfoTable.setForeground(Color.blue);
         JScrollPane jsp2 = new JScrollPane(topicInfoTable);
-
         jsp2.setBounds(0, 0, 1050, 400);
-
-
         jp[1].add(jsp2);
 
         //jp[2]发布选题
@@ -181,7 +172,6 @@ public class TeacherView extends JFrame implements ActionListener {
         topicContentLabel.setBounds(10, 100, 100, 28);
         topicContentLabel.setForeground(Color.blue);
 
-
         topicNoTextField = new JTextField(20);
         topicNoTextField.setBounds(100, 2, 200, 24);
         topicNoTextField.setFont(new Font("楷体", Font.BOLD, 15));
@@ -191,7 +181,6 @@ public class TeacherView extends JFrame implements ActionListener {
         topicNameTextField.setBounds(440, 2, 200, 24);
         topicNameTextField.setFont(new Font("楷体", Font.BOLD, 15));
         topicNameTextField.setForeground(Color.blue);
-
 
         topicTeacherNoTextField = new JTextField(20);
         topicTeacherNoTextField.setBounds(790, 2, 200, 24);
@@ -228,7 +217,6 @@ public class TeacherView extends JFrame implements ActionListener {
         clearButton.setForeground(Color.blue);
         clearButton.setBounds(150, 370, 120, 28);
         clearButton.addActionListener(this);
-
 
         jp[2].add(topicNoLabel);
         jp[2].add(topicNoTextField);
@@ -291,7 +279,6 @@ public class TeacherView extends JFrame implements ActionListener {
             public void run() {
                 //DeleteAuto da=new DeleteAuto(teacherNo);
             }
-
         }, 500);
 
         Timer timer2 = new Timer();
@@ -307,25 +294,20 @@ public class TeacherView extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == personInfoContentButton) {
-
             for (int i = 1; i < jp.length; i++) {
                 jp[i].setVisible(false);
             }
-
             jp[0].setVisible(true);
             myPersonInfoLabel.setVisible(true);
             chooseTopicLabel.setVisible(false);
             myTopicInfoLabel.setVisible(false);
-
         } else if (e.getSource() == myTopicContentButton) {
             for (JPanel aJp : jp) {
                 aJp.setVisible(false);
             }
-
             //更新table数据
             topicInfoModel.init(this.teacherNo);
             topicInfoTable.revalidate();
-
             jp[1].setVisible(true);
             myTopicInfoLabel.setVisible(true);
             myPersonInfoLabel.setVisible(false);
@@ -348,8 +330,6 @@ public class TeacherView extends JFrame implements ActionListener {
                     sexTextField.getText(),
                     birthdayTextField.getText());
             JOptionPane.showMessageDialog(this, "个人信息更新成功");
-
-
         }      else if (e.getSource() == issueTopicButton) {
             if (topicNoTextField.getText().length() != 0 &&
                     topicContentTextArea.getText().length() != 0 &&
