@@ -24,12 +24,12 @@ public class StudentInfoModel extends AbstractTableModel {
     private ResultSet resultSet;
     private String studentNo;
 
-    StudentInfoModel(String studentNo) {
+    public StudentInfoModel(String studentNo) {
         this.studentNo = studentNo;
         init(studentNo);
     }
 
-     void init(String studentNo) {
+    public void init(String studentNo) {
 
         columnNames = new Vector<>();
         columnNames.add("学号");
@@ -77,20 +77,38 @@ public class StudentInfoModel extends AbstractTableModel {
     }
 
     //更新学生个人信息
-    boolean updateStudentInfo(String studentNo,String name, int age, String sex, String birthday){
-        boolean success=false;
-        String sql="update student set name=?,age=?,sex=?,birthday=? where studentNo=?";
-        dbHelper=new DBHelper(sql);
+    boolean updateStudentInfo(String studentNo, String name, int age, String sex, String birthday) {
+        boolean success = false;
+        String sql = "update student set name=?,age=?,sex=?,birthday=? where studentNo=?";
+        dbHelper = new DBHelper(sql);
         try {
-            dbHelper.pst.setString(1,name);
-            dbHelper.pst.setInt(2,age);
-            dbHelper.pst.setString(3,sex);
-            dbHelper.pst.setString(4,birthday);
-            dbHelper.pst.setString(5,studentNo);
+            dbHelper.pst.setString(1, name);
+            dbHelper.pst.setInt(2, age);
+            dbHelper.pst.setString(3, sex);
+            dbHelper.pst.setString(4, birthday);
+            dbHelper.pst.setString(5, studentNo);
             dbHelper.pst.executeUpdate();
-            success=true;
+            success = true;
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return success;
+    }
+
+    //删除指定学生的信息
+    public boolean deleteStudentInfo(String studentNo) {
+        boolean success = false;
+        String sql = "delete from student where studentNo=?";
+        DBHelper dbHelper = new DBHelper(sql);
+        try {
+            dbHelper.pst.setString(1, studentNo);
+            dbHelper.pst.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "删除学生信息失败");
+        } finally {
+            dbHelper.close();
         }
         return success;
     }
