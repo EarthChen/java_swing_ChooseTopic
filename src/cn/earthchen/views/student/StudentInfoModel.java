@@ -1,52 +1,56 @@
-package cn.earthchen.views.teacher;
+package cn.earthchen.views.student;
 
 import cn.earthchen.db.DBHelper;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
 import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Vector;
 
 /**
- * Created by earthchen on 17-6-4.
+ * Created by earthchen on 17-6-6.
  */
-public class TeacherInfoModel extends AbstractTableModel {
+public class StudentInfoModel extends AbstractTableModel {
 
     private Vector<Vector<String>> rowData;
     private Vector<String> columnNames;
     private DBHelper dbHelper;
     private ResultSet resultSet;
-    private String teacherNo;
+    private String studentNo;
 
-
-    TeacherInfoModel(String teacherNo)  {
-        System.out.println(teacherNo);
-        this.teacherNo=teacherNo;
-        init(teacherNo);
-
+    StudentInfoModel(String studentNo) {
+        this.studentNo = studentNo;
+        init(studentNo);
     }
 
-    private void init(String teacherNo){
+     void init(String studentNo) {
+
         columnNames = new Vector<>();
-        columnNames.add("教师号");
+        columnNames.add("学号");
         columnNames.add("姓名");
-        columnNames.add("年龄");
         columnNames.add("性别");
+        columnNames.add("年龄");
         columnNames.add("出生日期");
+        columnNames.add("入学时间");
         columnNames.add("学院");
         rowData = new Vector<>();
         String sql;
-        if (teacherNo.equals("")) {
-            sql = "select * from teacher";
-        } else {
-            sql = "select * from teacher where teacherNo=?";
-        }
         try {
-            dbHelper = new DBHelper(sql);
-            dbHelper.pst.setString(1, teacherNo);
+            if (studentNo.equals("all")) {
+                sql = "select * from student";
+                dbHelper = new DBHelper(sql);
+
+            } else {
+                sql = "select * from student where studentNo=?";
+                dbHelper = new DBHelper(sql);
+                dbHelper.pst.setString(1, studentNo);
+            }
             resultSet = dbHelper.pst.executeQuery();
             while (resultSet.next()) {
                 Vector<String> row = new Vector<String>();
@@ -56,6 +60,7 @@ public class TeacherInfoModel extends AbstractTableModel {
                 row.add(resultSet.getString(5));
                 row.add(resultSet.getString(6));
                 row.add(resultSet.getString(7));
+                row.add(resultSet.getString(8));
                 rowData.add(row);
             }
         } catch (SQLException e) {
@@ -63,34 +68,33 @@ public class TeacherInfoModel extends AbstractTableModel {
         } finally {
             try {
                 resultSet.close();
-                dbHelper.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            dbHelper.close();
         }
+
     }
 
-    boolean updateTeacherInfo(String name, int age, String sex, String birthday){
+    //更新学生个人信息
+    boolean updateStudentInfo(String studentNo,String name, int age, String sex, String birthday){
         boolean success=false;
-        String sql="update teacher set name=?,age=?,sex=?,birthday=? where teacherNo=?";
-        DBHelper dbHelper1=new DBHelper(sql);
+        String sql="update student set name=?,age=?,sex=?,birthday=? where studentNo=?";
+        dbHelper=new DBHelper(sql);
         try {
-            dbHelper1.pst.setString(1,name);
-            dbHelper1.pst.setInt(2,age);
-            dbHelper1.pst.setString(3,sex);
-            dbHelper1.pst.setString(4,birthday);
-            dbHelper1.pst.setString(5,this.teacherNo);
-            dbHelper1.pst.executeUpdate();
+            dbHelper.pst.setString(1,name);
+            dbHelper.pst.setInt(2,age);
+            dbHelper.pst.setString(3,sex);
+            dbHelper.pst.setString(4,birthday);
+            dbHelper.pst.setString(5,studentNo);
+            dbHelper.pst.executeUpdate();
             success=true;
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "更新失败请重试");
-        }finally {
-            dbHelper1.close();
         }
-        init(teacherNo);
         return success;
     }
+
 
     @Override
     public String getColumnName(int column) {
@@ -108,7 +112,7 @@ public class TeacherInfoModel extends AbstractTableModel {
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        return ((Vector) this.rowData.get(rowIndex)).get(columnIndex);
+    public Object getValueAt(int row, int column) {
+        return ((Vector) this.rowData.get(row)).get(column);
     }
 }

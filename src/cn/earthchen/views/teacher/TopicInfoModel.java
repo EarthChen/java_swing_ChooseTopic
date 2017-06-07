@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+
+
 /**
  * Created by earthchen on 17-6-5.
  */
@@ -33,14 +35,15 @@ public class TopicInfoModel extends AbstractTableModel {
         columnNames.add("学生数");
         rowData = new Vector<>();
         String sql;
-        if (teacherNo.equals("")) {
-            sql = "select * from topic";
-        } else {
-            sql = "select * from topic where teacherNo=?";
-        }
         try {
-            dbHelper = new DBHelper(sql);
-            dbHelper.pst.setString(1, teacherNo);
+            if (teacherNo.equals("")) {
+                sql = "select * from topic";
+                dbHelper = new DBHelper(sql);
+            } else {
+                sql = "select * from topic where teacherNo=?";
+                dbHelper = new DBHelper(sql);
+                dbHelper.pst.setString(1, teacherNo);
+            }
             resultSet = dbHelper.pst.executeQuery();
             while (resultSet.next()) {
                 Vector<String> row = new Vector<>();
@@ -63,25 +66,24 @@ public class TopicInfoModel extends AbstractTableModel {
                 e.printStackTrace();
             }
         }
-
     }
 
     void saveTopicInfo(String topicNo, String topicName, String concent, String teacherNo, String teacherName, int studentCount) {
-        String sql="insert into topic (topicNo,topicName,content,teacherNo,teacherName,studentCount) values (?,?,?,?,?,?)";
-        dbHelper=new DBHelper(sql);
+        String sql = "insert into topic (topicNo,topicName,content,teacherNo,teacherName,studentCount) values (?,?,?,?,?,?)";
+        dbHelper = new DBHelper(sql);
         try {
-            dbHelper.pst.setString(1,topicNo);
-            dbHelper.pst.setString(2,topicName);
-            dbHelper.pst.setString(3,concent);
-            dbHelper.pst.setString(4,teacherNo);
-            dbHelper.pst.setString(5,teacherName);
-            dbHelper.pst.setInt(6,studentCount);
+            dbHelper.pst.setString(1, topicNo);
+            dbHelper.pst.setString(2, topicName);
+            dbHelper.pst.setString(3, concent);
+            dbHelper.pst.setString(4, teacherNo);
+            dbHelper.pst.setString(5, teacherName);
+            dbHelper.pst.setInt(6, studentCount);
             dbHelper.pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "发布课题成功");
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "发布课题失败请重试");
-        }finally {
+        } finally {
             dbHelper.close();
         }
     }

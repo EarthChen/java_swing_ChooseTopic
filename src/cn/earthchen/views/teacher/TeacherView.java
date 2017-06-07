@@ -16,18 +16,38 @@ import java.util.TimerTask;
 public class TeacherView extends JFrame implements ActionListener {
 
     private JPanel[] jp;
-    private JButton personInfoContentButton, myTopicContentButton, issueTopicContentButton, updateTeacherInfoButton,  issueTopicButton;
-    private JButton  clearButton;
+
+    private JButton personInfoContentButton;
+    private JButton myTopicContentButton;
+    private JButton issueTopicContentButton;
+    private JButton updateTeacherInfoButton;
+    private JButton issueTopicButton;
+    private JButton clearButton;
+
     private JLabel chooseTopicLabel;
     private JLabel myPersonInfoLabel;
     private JLabel myTopicInfoLabel;
-    private JTextField  topicNoTextField, topicNameTextField, topicTeacherNoTextField, topicTeacherNameTextField, topicStudentCountTextField;
-    private JTextArea topicContentTextArea;
-    private JTextField nameTextField, ageTextField, sexTextField, birthdayTextField;
-    private String teacherNo = null;
-    private TeacherInfoModel TeacherInfoModel = null;
-    private TopicInfoModel topicInfoModel;
+
     private JTable topicInfoTable;
+
+    private JTextField topicNoTextField;
+    private JTextField topicNameTextField;
+    private JTextField topicTeacherNoTextField;
+    private JTextField topicTeacherNameTextField;
+    private JTextField topicStudentCountTextField;
+
+    private JTextField nameTextField;
+    private JTextField ageTextField;
+    private JTextField sexTextField;
+    private JTextField birthdayTextField;
+
+    private JTextArea topicContentTextArea;
+
+    private String teacherNo = null;
+
+    private TeacherInfoModel teacherInfoModel = null;
+    private TopicInfoModel topicInfoModel;
+
 
     public static void main(String[] args) {
         TeacherView teacherView = new TeacherView("10001");
@@ -112,9 +132,9 @@ public class TeacherView extends JFrame implements ActionListener {
         updateTeacherInfoButton.setForeground(Color.blue);
         updateTeacherInfoButton.addActionListener(this);
         updateTeacherInfoButton.setBounds(900, 400, 120, 28);
-        TeacherInfoModel = new TeacherInfoModel(teacherNo);
+        teacherInfoModel = new TeacherInfoModel(teacherNo);
         JTable teacherInfoTable = new JTable();
-        teacherInfoTable.setModel(TeacherInfoModel);
+        teacherInfoTable.setModel(teacherInfoModel);
         teacherInfoTable.setFont(new Font("楷体", Font.BOLD, 15));
         teacherInfoTable.setForeground(Color.blue);
         JScrollPane teacherInfoScrollPane = new JScrollPane(teacherInfoTable);
@@ -186,14 +206,14 @@ public class TeacherView extends JFrame implements ActionListener {
         topicTeacherNoTextField.setBounds(790, 2, 200, 24);
         topicTeacherNoTextField.setFont(new Font("楷体", Font.BOLD, 15));
         topicTeacherNoTextField.setForeground(Color.blue);
-        topicTeacherNoTextField.setText(TeacherInfoModel.getValueAt(0, 0).toString());
+        topicTeacherNoTextField.setText(teacherInfoModel.getValueAt(0, 0).toString());
         topicTeacherNoTextField.setEditable(false);
 
         topicTeacherNameTextField = new JTextField(20);
         topicTeacherNameTextField.setBounds(100, 52, 200, 24);
         topicTeacherNameTextField.setFont(new Font("楷体", Font.BOLD, 15));
         topicTeacherNameTextField.setForeground(Color.blue);
-        topicTeacherNameTextField.setText(TeacherInfoModel.getValueAt(0, 1).toString());
+        topicTeacherNameTextField.setText(teacherInfoModel.getValueAt(0, 1).toString());
         topicTeacherNameTextField.setEditable(false);
 
         topicStudentCountTextField = new JTextField(20);
@@ -324,13 +344,18 @@ public class TeacherView extends JFrame implements ActionListener {
             myPersonInfoLabel.setVisible(false);
             myTopicInfoLabel.setVisible(false);
         } else if (e.getSource() == updateTeacherInfoButton) {
-            TeacherInfoModel.updateTeacherInfo(
+            boolean success = teacherInfoModel.updateTeacherInfo(
                     nameTextField.getText(),
                     Integer.parseInt(ageTextField.getText()),
                     sexTextField.getText(),
                     birthdayTextField.getText());
-            JOptionPane.showMessageDialog(this, "个人信息更新成功");
-        }      else if (e.getSource() == issueTopicButton) {
+            if (success){
+                JOptionPane.showMessageDialog(this, "个人信息更新成功");
+            }else {
+                JOptionPane.showMessageDialog(this, "个人信息更新失败");
+            }
+
+        } else if (e.getSource() == issueTopicButton) {
             if (topicNoTextField.getText().length() != 0 &&
                     topicContentTextArea.getText().length() != 0 &&
                     topicNameTextField.getText().length() != 0 &&
