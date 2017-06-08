@@ -13,23 +13,17 @@ import java.sql.SQLException;
  */
 public class TeacherAddDialog extends JDialog implements ActionListener {
 
-    JLabel jbl1, jbl2, jbl3, jbl4, jbl5, jbl6, jbl7, jbl8, jbl9, jbl10, jbl11, jbl12;
-    JTextField teacherNoField, nameField, ageField, sexField, birthdayField, jtf6, jtf7, jtf8, jtf9, teacherNoField0, departmentField;
-    JPasswordField passwordField;
-    JButton confirmButton, cancelButton;
-    private JPanel jp1;
-    private JPanel jp2;
-    private JPanel jp4;
-    private JPanel jp5;
-    private JPanel jp6;
-    private JPanel jp7;
-    private JPanel jp8;
-    private JPanel jp9;
-    private JPanel jp10;
-    private JPanel jp11;
-    private JPanel jp12;
-    private JPanel jp13;
-    private JPanel jp3;
+
+    private JTextField teacherNoField;
+    private JTextField nameField;
+    private JTextField ageField;
+    private JTextField sexField;
+    private JTextField birthdayField;
+    private JTextField departmentField;
+
+    private JPasswordField passwordField;
+
+    private JButton confirmButton;
 
 
     TeacherAddDialog(Frame owner, String title, boolean modal) {
@@ -37,28 +31,26 @@ public class TeacherAddDialog extends JDialog implements ActionListener {
 
         Font font = new Font("楷体", Font.BOLD, 15);
 
-        jp1 = new JPanel();
-        jp2 = new JPanel();
-        jp3 = new JPanel();
-        jp4 = new JPanel();
-        jp5 = new JPanel();
-        jp6 = new JPanel();
-        jp7 = new JPanel();
-        jp8 = new JPanel();
-        jp9 = new JPanel();
-        jp10 = new JPanel();
-        jp11 = new JPanel();
-        jp12 = new JPanel();
-        jp13 = new JPanel();
+        JPanel jp1 = new JPanel();
+        JPanel jp2 = new JPanel();
+        JPanel jp3 = new JPanel();
+        JPanel jp4 = new JPanel();
+        JPanel jp5 = new JPanel();
+        JPanel jp6 = new JPanel();
+        JPanel jp9 = new JPanel();
+        JPanel jp10 = new JPanel();
+        JPanel jp11 = new JPanel();
+        JPanel jp12 = new JPanel();
+        JPanel jp13 = new JPanel();
 
-        jbl1 = new JLabel("　教师号*");
-        jbl2 = new JLabel("　　姓名*");
-        jbl3 = new JLabel("　　年龄*");
-        jbl4 = new JLabel("　　性别*");
-        jbl5 = new JLabel("出生日期*");
+        JLabel jbl1 = new JLabel("　教师号*");
+        JLabel jbl2 = new JLabel("　　姓名*");
+        JLabel jbl3 = new JLabel("　　年龄*");
+        JLabel jbl4 = new JLabel("　　性别*");
+        JLabel jbl5 = new JLabel("出生日期*");
 
-        jbl11 = new JLabel("　　学院*");
-        jbl12 = new JLabel("　　密码*");
+        JLabel jbl11 = new JLabel("　　学院*");
+        JLabel jbl12 = new JLabel("　　密码*");
 
         jbl1.setFont(font);
         jbl1.setForeground(Color.blue);
@@ -108,7 +100,7 @@ public class TeacherAddDialog extends JDialog implements ActionListener {
 
         confirmButton = new JButton("确定");
         confirmButton.addActionListener(this);
-        cancelButton = new JButton("取消");
+        JButton cancelButton = new JButton("取消");
         cancelButton.addActionListener(this);
 
         jp1.add(jbl1);

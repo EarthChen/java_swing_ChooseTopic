@@ -4,11 +4,7 @@ import cn.earthchen.db.DBHelper;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import java.awt.*;
-import java.sql.Blob;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -22,10 +18,8 @@ public class StudentInfoModel extends AbstractTableModel {
     private Vector<String> columnNames;
     private DBHelper dbHelper;
     private ResultSet resultSet;
-    private String studentNo;
 
     public StudentInfoModel(String studentNo) {
-        this.studentNo = studentNo;
         init(studentNo);
     }
 

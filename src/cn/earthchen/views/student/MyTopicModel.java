@@ -1,9 +1,9 @@
 package cn.earthchen.views.student;
 
 import cn.earthchen.db.DBHelper;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.swing.table.AbstractTableModel;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -20,24 +20,35 @@ public class MyTopicModel extends AbstractTableModel {
     private ResultSet resultSet;
     private String studentNo;
 
-    MyTopicModel(String studentNo) {
+
+
+    public MyTopicModel(String studentNo) {
         this.studentNo = studentNo;
         init(studentNo);
     }
 
 
-     void init(String studentNo) {
+    void init(String studentNo) {
         columnNames = new Vector<>();
+        columnNames.add("学号");
         columnNames.add("课题号");
         columnNames.add("课题名");
         columnNames.add("内容");
         columnNames.add("教师姓名");
         rowData = new Vector<>();
-        String sql = "select topic.topicNo,topicName,content,teacherName" +
-                " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo and studentNo=?";
-        dbHelper = new DBHelper(sql);
+        String sql;
         try {
-            dbHelper.pst.setString(1, studentNo);
+            if (studentNo.equals("all")) {
+                sql = "select studentNo,topic.topicNo,topicName,content,teacherName" +
+                        " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo";
+                dbHelper = new DBHelper(sql);
+            } else {
+                sql = "select studentNo,topic.topicNo,topicName,content,teacherName" +
+                        " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo and studentNo=?";
+                dbHelper = new DBHelper(sql);
+                dbHelper.pst.setString(1, studentNo);
+
+            }
             resultSet = dbHelper.pst.executeQuery();
             while (resultSet.next()) {
                 Vector<String> row = new Vector<>();
@@ -45,26 +56,107 @@ public class MyTopicModel extends AbstractTableModel {
                 row.add(resultSet.getString(2));
                 row.add(resultSet.getString(3));
                 row.add(resultSet.getString(4));
+                row.add(resultSet.getString(5));
                 rowData.add(row);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            dbHelper.close();
         }
     }
+
+    //根据topicNo查询
+    public void findChooseTopicFromTopicNo(String topicNo){
+
+        columnNames = new Vector<>();
+        columnNames.add("学号");
+        columnNames.add("课题号");
+        columnNames.add("课题名");
+        columnNames.add("内容");
+        columnNames.add("教师姓名");
+        rowData = new Vector<>();
+        String sql="select studentNo,topic.topicNo,topicName,content,teacherName" +
+                " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo and topic.topicNo=?";
+        try {
+            dbHelper=new DBHelper(sql);
+            dbHelper.pst.setString(1,topicNo);
+            System.out.println(dbHelper.pst);
+            while (resultSet.next()){
+                Vector<String> row = new Vector<>();
+                row.add(resultSet.getString(1));
+                row.add(resultSet.getString(2));
+                row.add(resultSet.getString(3));
+                row.add(resultSet.getString(4));
+                row.add(resultSet.getString(5));
+                rowData.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            dbHelper.close();
+        }
+    }
+
+    //根据teacherNo查询
+    public void findChooseTopicFromTeacherNo(String TeacherNo){
+        columnNames = new Vector<>();
+        columnNames.add("学号");
+        columnNames.add("课题号");
+        columnNames.add("课题名");
+        columnNames.add("内容");
+        columnNames.add("教师姓名");
+        String sql="select studentNo,topic.topicNo,topicName,content,teacherName" +
+                " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo and teacherNo=?";
+        try {
+            dbHelper=new DBHelper(sql);
+            dbHelper.pst.setString(1,TeacherNo);
+            resultSet = dbHelper.pst.executeQuery();
+            while (resultSet.next()){
+                Vector<String> row = new Vector<>();
+                row.add(resultSet.getString(1));
+                row.add(resultSet.getString(2));
+                row.add(resultSet.getString(3));
+                row.add(resultSet.getString(4));
+                row.add(resultSet.getString(5));
+                rowData.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            dbHelper.close();
+        }
+    }
+
 
 
     //删除学号与课题号的对应关系
     boolean deleteStudentNoTopicNo(String topicNo) {
         boolean success = false;
         String sql = "delete from studentNoToTopicNo where topicNo=?";
-        dbHelper=new DBHelper(sql);
+        dbHelper = new DBHelper(sql);
         try {
-            dbHelper.pst.setString(1,topicNo);
+            dbHelper.pst.setString(1, topicNo);
             dbHelper.pst.executeUpdate();
-            success=true;
+            success = true;
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             dbHelper.close();
         }
         return success;

@@ -21,7 +21,7 @@ public class TopicInfoModel extends AbstractTableModel {
     private ResultSet resultSet;
 
 
-    TopicInfoModel(String teacherNo) {
+    public TopicInfoModel(String teacherNo) {
         init(teacherNo);
     }
 
@@ -36,7 +36,7 @@ public class TopicInfoModel extends AbstractTableModel {
         rowData = new Vector<>();
         String sql;
         try {
-            if (teacherNo.equals("")) {
+            if (teacherNo.equals("all")) {
                 sql = "select * from topic";
                 dbHelper = new DBHelper(sql);
             } else {
@@ -84,6 +84,82 @@ public class TopicInfoModel extends AbstractTableModel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "发布课题失败请重试");
         } finally {
+            dbHelper.close();
+        }
+    }
+
+    public void findTopicInfoFromTeacherNo(String teacherNo){
+        columnNames = new Vector<>();
+        columnNames.add("课题号");
+        columnNames.add("课题名");
+        columnNames.add("内容");
+        columnNames.add("教师号");
+        columnNames.add("教师姓名");
+        columnNames.add("学生数");
+        rowData = new Vector<>();
+        ResultSet resultSet = null;
+        String sql="select * from topic where teacherNo=?";
+        try {
+            dbHelper=new DBHelper(sql);
+            dbHelper.pst.setString(1,teacherNo);
+            resultSet=dbHelper.pst.executeQuery();
+            while (resultSet.next()){
+                Vector<String> row = new Vector<>();
+                row.add(resultSet.getString(2));
+                row.add(resultSet.getString(3));
+                row.add(resultSet.getString(4));
+                row.add(resultSet.getString(5));
+                row.add(resultSet.getString(6));
+                row.add(resultSet.getString(7));
+                rowData.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            dbHelper.close();
+        }
+    }
+
+
+    public void findTopicInfoFromTopicNo(String topicNo){
+        columnNames = new Vector<>();
+        columnNames.add("课题号");
+        columnNames.add("课题名");
+        columnNames.add("内容");
+        columnNames.add("教师号");
+        columnNames.add("教师姓名");
+        columnNames.add("学生数");
+        rowData = new Vector<>();
+        String sql="select * from topic where topicNo=?";
+        ResultSet resultSet=null;
+        try {
+            dbHelper=new DBHelper(sql);
+            dbHelper.pst.setString(1,topicNo);
+            resultSet=dbHelper.pst.executeQuery();
+            while (resultSet.next()){
+                Vector<String> row = new Vector<>();
+                row.add(resultSet.getString(2));
+                row.add(resultSet.getString(3));
+                row.add(resultSet.getString(4));
+                row.add(resultSet.getString(5));
+                row.add(resultSet.getString(6));
+                row.add(resultSet.getString(7));
+                rowData.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             dbHelper.close();
         }
     }
