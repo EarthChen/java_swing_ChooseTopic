@@ -21,7 +21,6 @@ public class MyTopicModel extends AbstractTableModel {
     private String studentNo;
 
 
-
     public MyTopicModel(String studentNo) {
         this.studentNo = studentNo;
         init(studentNo);
@@ -61,7 +60,7 @@ public class MyTopicModel extends AbstractTableModel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 resultSet.close();
             } catch (SQLException e) {
@@ -72,7 +71,7 @@ public class MyTopicModel extends AbstractTableModel {
     }
 
     //根据topicNo查询
-    public void findChooseTopicFromTopicNo(String topicNo){
+    public void findChooseTopicFromTopicNo(String topicNo) {
 
         columnNames = new Vector<>();
         columnNames.add("学号");
@@ -81,13 +80,14 @@ public class MyTopicModel extends AbstractTableModel {
         columnNames.add("内容");
         columnNames.add("教师姓名");
         rowData = new Vector<>();
-        String sql="select studentNo,topic.topicNo,topicName,content,teacherName" +
+        String sql = "select studentNo,topic.topicNo,topicName,content,teacherName" +
                 " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo and topic.topicNo=?";
         try {
-            dbHelper=new DBHelper(sql);
-            dbHelper.pst.setString(1,topicNo);
+            dbHelper = new DBHelper(sql);
+            dbHelper.pst.setString(1, topicNo);
+            resultSet = dbHelper.pst.executeQuery();
             System.out.println(dbHelper.pst);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Vector<String> row = new Vector<>();
                 row.add(resultSet.getString(1));
                 row.add(resultSet.getString(2));
@@ -98,7 +98,7 @@ public class MyTopicModel extends AbstractTableModel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 resultSet.close();
             } catch (SQLException e) {
@@ -109,20 +109,20 @@ public class MyTopicModel extends AbstractTableModel {
     }
 
     //根据teacherNo查询
-    public void findChooseTopicFromTeacherNo(String TeacherNo){
+    public void findChooseTopicFromTeacherNo(String TeacherNo) {
         columnNames = new Vector<>();
         columnNames.add("学号");
         columnNames.add("课题号");
         columnNames.add("课题名");
         columnNames.add("内容");
         columnNames.add("教师姓名");
-        String sql="select studentNo,topic.topicNo,topicName,content,teacherName" +
+        String sql = "select studentNo,topic.topicNo,topicName,content,teacherName" +
                 " from studentNoToTopicNo,topic where topic.topicNo=studentNoToTopicNo.topicNo and teacherNo=?";
         try {
-            dbHelper=new DBHelper(sql);
-            dbHelper.pst.setString(1,TeacherNo);
+            dbHelper = new DBHelper(sql);
+            dbHelper.pst.setString(1, TeacherNo);
             resultSet = dbHelper.pst.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Vector<String> row = new Vector<>();
                 row.add(resultSet.getString(1));
                 row.add(resultSet.getString(2));
@@ -133,7 +133,7 @@ public class MyTopicModel extends AbstractTableModel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 resultSet.close();
             } catch (SQLException e) {
@@ -144,20 +144,21 @@ public class MyTopicModel extends AbstractTableModel {
     }
 
 
-
     //删除学号与课题号的对应关系
     boolean deleteStudentNoTopicNo(String topicNo) {
         boolean success = false;
         String sql = "delete from studentNoToTopicNo where topicNo=?";
-        dbHelper = new DBHelper(sql);
+        DBHelper dbHelper1 = new DBHelper(sql);
         try {
-            dbHelper.pst.setString(1, topicNo);
-            dbHelper.pst.executeUpdate();
+            System.out.println("sss"+topicNo);
+            dbHelper1.pst.setString(1, topicNo);
+            dbHelper1.pst.executeUpdate();
+            System.out.println("sssss");
             success = true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            dbHelper.close();
+            dbHelper1.close();
         }
         return success;
     }

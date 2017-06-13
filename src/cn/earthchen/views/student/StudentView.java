@@ -264,7 +264,7 @@ public class StudentView extends JFrame implements ActionListener {
             int confirmValue = JOptionPane.showConfirmDialog(this, "一旦退选无法恢复，是否确认退选");
             String topicNo = null;
             if (confirmValue==0){
-                topicNo = myTopicTable.getValueAt(myTopicTable.getSelectedRow(), 0).toString();
+                topicNo = myTopicTable.getValueAt(myTopicTable.getSelectedRow(), 1).toString();
             }
             boolean deleteMyTopic=myTopicModel.deleteStudentNoTopicNo(topicNo);
             if (deleteMyTopic){

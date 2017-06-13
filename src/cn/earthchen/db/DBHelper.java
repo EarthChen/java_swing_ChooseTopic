@@ -7,12 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBHelper {
-    public static final String url = "jdbc:mysql://127.0.0.1/chooseclass?useUnicode=true&characterEncoding=utf8&useSSL=true";
-    public static final String name = "com.mysql.cj.jdbc.Driver";
-    public static final String user = "earthchen";
-    public static final String password = "cyw123456789";
+    private static final String url = "jdbc:mysql://127.0.0.1/chooseclass?useUnicode=true&characterEncoding=utf8&useSSL=true";
+    private static final String name = "com.mysql.cj.jdbc.Driver";
+    private static final String user = "earthchen";
+    private static final String password = "cyw123456789";
 
-    public Connection conn = null;
+    private Connection conn = null;
     public PreparedStatement pst = null;
 
     public DBHelper(String sql) {
