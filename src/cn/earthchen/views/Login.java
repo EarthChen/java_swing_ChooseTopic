@@ -24,7 +24,7 @@ public class Login extends JFrame implements ActionListener {
     private JRadioButton studentRadioButton;
     private JRadioButton adminRadioButton;
 
-    private Login() {
+    public Login() {
         JPanel jp1 = new JPanel();
         JPanel jp2 = new JPanel();
         JPanel jp3 = new JPanel();

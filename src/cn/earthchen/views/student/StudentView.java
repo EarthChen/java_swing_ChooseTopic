@@ -1,9 +1,13 @@
 package cn.earthchen.views.student;
 
+import cn.earthchen.views.Login;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by earthchen on 17-6-4.
@@ -220,8 +224,14 @@ public class StudentView extends JFrame implements ActionListener {
         this.setSize(1300, 700);
         this.setLocation(50, 20);
         this.setResizable(false);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                dispose();
+                new Login();
+            }});
     }
 
 

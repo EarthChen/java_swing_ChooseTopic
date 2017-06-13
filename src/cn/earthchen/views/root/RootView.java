@@ -2,6 +2,7 @@ package cn.earthchen.views.root;
 
 
 import cn.earthchen.db.DBHelper;
+import cn.earthchen.views.Login;
 import cn.earthchen.views.student.MyTopicModel;
 import cn.earthchen.views.student.StudentInfoModel;
 import cn.earthchen.views.teacher.TeacherInfoModel;
@@ -11,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 /**
@@ -363,8 +366,16 @@ public class RootView extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setLocation(60, 10);
         this.setSize(1300, 700);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                dispose();
+                new Login();
+            }});
+
+
     }
 
     @Override

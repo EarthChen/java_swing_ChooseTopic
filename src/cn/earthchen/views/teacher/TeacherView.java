@@ -1,9 +1,13 @@
 package cn.earthchen.views.teacher;
 
+import cn.earthchen.views.Login;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -290,24 +294,16 @@ public class TeacherView extends JFrame implements ActionListener {
         this.setTitle("学生选题管理系统");
         this.setBackground(Color.gray);
         this.setLocation(50, 30);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        this.addWindowListener(new WindowAdapter(){
             @Override
-            public void run() {
-                //DeleteAuto da=new DeleteAuto(teacherNo);
-            }
-        }, 500);
-
-        Timer timer2 = new Timer();
-        timer2.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //new AddAuto();
-            }
-        }, 1000);
+            public void windowClosing(WindowEvent e)
+            {
+                dispose();
+                new Login();
+            }});
     }
 
 
