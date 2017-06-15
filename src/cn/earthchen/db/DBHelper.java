@@ -34,6 +34,5 @@ public class DBHelper {
             e.printStackTrace();
         }
 
-        System.out.println();
     }
 }
